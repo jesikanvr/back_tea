@@ -1,5 +1,5 @@
 {
-  "name": "back_node",
+  "name": "back_tea",
   "version": "1.0.0",
   "description": "Back for web programin learning",
   "main": "index.js",
@@ -8,7 +8,7 @@
     "start": "node index",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Abdiel Blanco Serrano",
+  "author": "Jesika Vega",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",

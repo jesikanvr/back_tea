@@ -5,17 +5,17 @@ const {
   userPost,
   usersPut,
   usersDelete,
-} = require("../controllers/user.controllers");
+} = require("../../main/user/user.controllers");
 const {
   isRoleValid,
   emailExists,
   existsUserForId,
 } = require("../heplers/validate-db");
 const { NameNotEmpty, EmailNotEmpty } = require("../heplers/validate-empty");
-const { validateFields } = require("../middlewares/validate-fields");
-const { validateJWT } = require("../middlewares/validate-jwt");
-const { isAdminRole, hasRole } = require("../middlewares/validate-role");
-const Role = require("../models/role.models");
+const { validateFields } = require("../../middlewares/validate-fields");
+const { validateJWT } = require("../../middlewares/validate-jwt");
+const { isAdminRole, hasRole } = require("../../middlewares/validate-role");
+const Role = require("../role/role.models");
 
 const router = Router();
 

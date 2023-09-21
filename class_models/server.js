@@ -9,6 +9,8 @@ class Server {
     this.port = process.env.PORT;
     this.userPath = "/api/user";
     this.authPath = "/api/auth";
+    this.activityPath = "/api/activity";
+
 
     //CONECTAR BASE DE DATOS
     this.conectionDB();
@@ -34,8 +36,9 @@ class Server {
   }
 
   routes() {
-    this.app.use(this.authPath, require("../routers/auth.routers"));
-    this.app.use(this.userPath, require("../routers/user.routers"));
+    this.app.use(this.authPath, require("../main/auth/auth.routers"));
+    this.app.use(this.userPath, require("../main/user/user.routers"));
+    this.app.use(this.activityPath, require("../main/activity/activity.routers"));
   }
 
   listen() {
