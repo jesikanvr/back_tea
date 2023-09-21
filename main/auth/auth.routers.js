@@ -1,8 +1,8 @@
 const { Router } = require("express");
 const { check } = require("express-validator");
-const { login, register } = require("../controllers/auth.controllers");
+const { login, register } = require("../../main/auth/auth.controllers");
 
-const { validateFields } = require("../middlewares/validate-fields");
+const { validateFields } = require("../../middlewares/validate-fields");
 
 const { emailExists } = require("../heplers/validate-db");
 

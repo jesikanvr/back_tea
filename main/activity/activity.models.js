@@ -1,8 +1,8 @@
 const { DataTypes } = require("sequelize");
 
-const { sequelize } = require("./../database/conf");
+const { sequelize } = require("../../database/conf");
 
-const User = sequelize.define("user", {
+const Activity = sequelize.define("activity", {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
@@ -12,30 +12,27 @@ const User = sequelize.define("user", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
-  },
-  password: {
+  description: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  img: {
+  category: {
     type: DataTypes.STRING,
+    allowNull: false,
   },
-  role: {
-    type: DataTypes.ENUM("ADMIN", "USER"),
+  //objetivo
+  aim: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  homework: {
+    type: DataTypes.STRING,
     allowNull: false,
   },
   state: {
     type: DataTypes.BOOLEAN,
     defaultValue: true,
   },
-  google: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false,
-  },
 });
 
-module.exports = User;
+module.exports = Activity;
