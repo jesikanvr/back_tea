@@ -1,6 +1,7 @@
 const stream = require("stream");
 const { google } = require("googleapis");
 const { AUTH } = require("../google/google.apis.conf");
+const { SEND_MAIL } = require("./google-email");
 
 const folder_drive = process.env.GOOGLE_FOLDER;
 
@@ -20,6 +21,7 @@ const uploadFile = async (fileObject) => {
       },
       fields: "id,name",
     });
+    SEND_MAIL(process.env.MAIL, 'log', `Intento de subida del fichero: ${data.id}`)
   //console.log(`UPLOAD FILES ${data.name} ${data.id}`);
   return data.id;
 };
