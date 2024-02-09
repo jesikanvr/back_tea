@@ -4,7 +4,7 @@ const { login, register } = require("../../main/auth/auth.controllers");
 
 const { validateFields } = require("../../middlewares/validate-fields");
 
-const { emailExists } = require("../heplers/validate-db");
+const { emailExists } = require("../../helpers/validate-db");
 
 const router = Router();
 
