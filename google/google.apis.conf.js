@@ -3,7 +3,7 @@ const { google } = require("googleapis");
 const AUTH = new google.auth.JWT({
   email: process.env.GOOGLE_CLIENT_EMAIL,
   key: process.env.GOOGLE_PRIVATE_KEY,
-  scopes: ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/gamil"],
+  scopes: ["https://www.googleapis.com/auth/drive"],
 });
 
 const OAUTH2CLIENT = new google.auth.OAuth2(

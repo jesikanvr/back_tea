@@ -8,7 +8,6 @@ const GET_ABILITY = async (req = request, res = response) => {
     const result = await sequelize.query(
       `select * from pg_get_ability_from_stage (${page || 1}, ${limit || -1});`
     );
-    SEND_MAIL("abdielblancoserrano@gmail.com", "Prueba", "Email de prueba");
     return res.status(200).json({ ability: result[0] });
   } catch (error) {
     console.log(error);
