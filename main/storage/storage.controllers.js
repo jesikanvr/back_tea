@@ -24,9 +24,9 @@ const createFile = async (req, res) => {
 const getGFile = async (req, res) => {
   try {
     console.log(req.body);
-    const { body } = req;
+    const { id } = req.body;
 
-    await getFile();
+    await getFile(id);
 
     res.status(200).send("Form Submitted");
   } catch (f) {
