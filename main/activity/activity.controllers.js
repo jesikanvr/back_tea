@@ -3,23 +3,13 @@ const { sequelize } = require("../../database/conf");
 const { SEND_MAIL } = require("../../helpers/google-email");
 
 const GET_ACTIVITY = async (req = request, res = response) => {
-  req.query;
+  const { id_objective} = req.body;
   try {
     const result = await sequelize.query(
-      `select a.id, a.description, o.id 
-        from activity a
-        inner join objective o on a.id_objective  = o.id
-        where o.id = 'a4c4f4b3-6637-456c-b4a9-8ce627627b1f'
-        order by a.description`
+      `select * from get_activities_for_objective_json('${id_objective}');`
     );
-    const activity = [];
-    result[0].forEach((row) => {
-      activity.push({
-        id: row.id,
-        description: row.description,
-      });
-    });
-    return res.status(200).json({ activity });
+
+    return res.status(200).json(result[0]);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal error" });
@@ -27,7 +17,7 @@ const GET_ACTIVITY = async (req = request, res = response) => {
 };
 
 const POST_ACTIVITY = async (req = request, res = response) => {
-  res.status(200).json({ ability: {} });
+  res.status(200).json({ activity: {} });
 };
 
 module.exports = {
