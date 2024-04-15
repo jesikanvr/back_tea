@@ -1,38 +1,40 @@
 const { response, request } = require("express");
 const { sequelize } = require("../../database/conf");
-const { SEND_MAIL } = require("../../helpers/google-email");
+//const { SEND_MAIL } = require("../../helpers/google-email");
 
 const GET_HOMEWORK = async (req = request, res = response) => {
-  req.query;
+  const { id_objective} = req.body;
   try {
     const result = await sequelize.query(
-      //`pg_get_objective_from_stage (${id}, ${page || 1}, ${limit || -1});`
-      `select h.id, h."name", o.id 
-      from homework h
-      inner join objective o on h.id_objective = o.id
-      where o.id = 'a4c4f4b3-6637-456c-b4a9-8ce627627b1f'
-      order by h.name`
+      `select * from get_homeworks_for_objective_json('${id_objective}');`
     );
-    const homework = [];
-    result[0].forEach((row) => {
-        homework.push({
-        id: row.id,
-        name: row.name,
-      });
-    });
-    return res.status(200).json({ homework });
+    return res.status(200).json(result[0]);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal error" });
   }
 };
 
+const GET_HOMEWORK_FOR_ID = async (req = request, res = response) => {
+  const {id_homework} = req.body;
+  try {
+    const result = await sequelize.query(
+      `select * from get_homework_for_id_json('${id_homework}');`
+    );
+    return res.status(200).json(result[0]);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal error" });
+  }
+}
+
 const POST_HOMEWORK = async (req = request, res = response) => {
 
-  res.status(200).json({ objetive: {} });
+  res.status(200).json({ homework: {} });
 };
 
 module.exports = {
   GET_HOMEWORK,
+  GET_HOMEWORK_FOR_ID,
   POST_HOMEWORK,
 };
