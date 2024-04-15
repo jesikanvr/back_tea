@@ -2,7 +2,7 @@ const { response, request } = require("express");
 const { sequelize } = require("../../database/conf");
 //const { SEND_MAIL } = require("../../helpers/google-email");
 
-const GET_HOMEWORK = async (req = request, res = response) => {
+const POST_HOMEWORK_P = async (req = request, res = response) => {
   const { id_objective} = req.body;
   try {
     const result = await sequelize.query(
@@ -15,7 +15,7 @@ const GET_HOMEWORK = async (req = request, res = response) => {
   }
 };
 
-const GET_HOMEWORK_FOR_ID = async (req = request, res = response) => {
+const POST_HOMEWORK_FOR_ID = async (req = request, res = response) => {
   const {id_homework} = req.body;
   try {
     const result = await sequelize.query(
@@ -34,7 +34,7 @@ const POST_HOMEWORK = async (req = request, res = response) => {
 };
 
 module.exports = {
-  GET_HOMEWORK,
-  GET_HOMEWORK_FOR_ID,
+  POST_HOMEWORK_P,
+  POST_HOMEWORK_FOR_ID,
   POST_HOMEWORK,
 };
