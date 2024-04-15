@@ -21,7 +21,7 @@ const POST_HOMEWORK_FOR_ID = async (req = request, res = response) => {
     const result = await sequelize.query(
       `select * from get_homework_for_id_json('${id_homework}');`
     );
-    return res.status(200).json(result[0]);
+    return res.status(200).json(result[0][0]['get_homework_for_id_json']);
   } catch (error) {
     console.log("ERROR: ",error);
     return res.status(500).json({ error: "Internal error" });
