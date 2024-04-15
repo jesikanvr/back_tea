@@ -23,7 +23,7 @@ const POST_HOMEWORK_FOR_ID = async (req = request, res = response) => {
     );
     return res.status(200).json(result[0]);
   } catch (error) {
-    console.log(error);
+    console.log("ERROR: ",error);
     return res.status(500).json({ error: "Internal error" });
   }
 }
