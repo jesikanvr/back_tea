@@ -8,7 +8,7 @@ const { validateFields } = require("../../middlewares/validate-fields");
 
 const router = Router();
 
-router.post(
+/* router.post(
   "/",
   [ 
     //check("id_stage", "The id is invalid").isUUID(4),
@@ -16,10 +16,10 @@ router.post(
     validateFields 
   ],
   POST_HOMEWORK_P
-);
+); */
 
 router.post(
-  "/:id",
+  "/",
   [ 
     //check("id_stage", "The id is invalid").isUUID(4),
     //check("id_ability", "The id is invalid").isUUID(4),
