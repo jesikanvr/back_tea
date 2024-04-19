@@ -4,12 +4,26 @@ const { SEND_MAIL } = require("../../helpers/google-email");
 const { body } = require("express-validator");
 //const { GET_ABILITY } = require("../../ability.controllers");
 
-const GET_OBJETIVE = async (req = request, res = response) => {
-  const { id_ability, id_stage, page, limit} = req.body;
+const POST_OBJETIVE_FOR_ID  = async (req = request, res = response) => {
+  const { id_obj} = req.body;
   //console.log(result)
   try {
     const result = await sequelize.query(   
-     `select * from pg_get_objectives_from_stage_and_ability ('${id_stage}', '${id_ability}', ${page || 1}, ${limit || -1});`
+     `select * from get_objective_for_id_json ('${id_obj}');`
+    );
+    return res.status(200).json(result[0]);
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal error" });
+  }
+};
+const POST_OBJETIVE_FOR_ABILITY  = async (req = request, res = response) => {
+  const { id_ab} = req.body;
+  //console.log(result)
+  try {
+    const result = await sequelize.query(   
+     `select * from get_objectives_for_ability_json ('${id_ab}');`
     );
     return res.status(200).json(result[0]);
 
@@ -25,6 +39,7 @@ const POST_OBJETIVE = async (req = request, res = response) => {
 };
 
 module.exports = {
-  GET_OBJETIVE,
+  POST_OBJETIVE_FOR_ID,
+  POST_OBJETIVE_FOR_ABILITY,
   POST_OBJETIVE,
 };

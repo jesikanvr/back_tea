@@ -10,7 +10,7 @@ class Server {
     this.AUTH_PATH = "/api/auth";
     this.UPLOAD_PATH = "/api/upload";
     this.ABILITY_PATH = "/api/ability";
-    this.OBJETIVE_PATH = "/api/objetive";
+    this.OBJETIVE_PATH = "/api/objective";
     this.ACTIVITY_PATH = "/api/activity";
     this.HOMEWORK_PATH = "/api/homework";
     this.ORIENTATION_PATH = "/api/orientation";
@@ -41,7 +41,7 @@ class Server {
   routes() {
     this.APP.use(this.AUTH_PATH, require("../main/auth/auth.routers"));
     this.APP.use(this.ABILITY_PATH, require("../main/ability/ability.routers"));
-    this.APP.use(this.OBJETIVE_PATH, require("../main/objective/objetive.routers"));
+    this.APP.use(this.OBJETIVE_PATH, require("../main/objective/objective.routers"));
     this.APP.use(this.ACTIVITY_PATH, require("../main/activity/activity.routers"));
     this.APP.use(this.HOMEWORK_PATH, require("../main/homework/homework.routers"));
     this.APP.use(this.ORIENTATION_PATH, require("../main/orientation/orientation.routers"));
