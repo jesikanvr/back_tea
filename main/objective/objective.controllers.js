@@ -25,7 +25,7 @@ const POST_OBJETIVE_FOR_ABILITY  = async (req = request, res = response) => {
     const result = await sequelize.query(   
      `select * from get_objectives_for_ability_json ('${id_ab}');`
     );
-    return res.status(200).json(result[0]);
+    return res.status(200).json(result[0][0]['get_objectives_for_ability_json']);
 
   } catch (error) {
     console.log(error);
