@@ -9,9 +9,9 @@ const Post_ACTIVITY_ID = async (req = request, res = response) => {
       `select * from get_activity_for_id_json('${id_act}');`
     );
 
-    return res.status(200).json(result[0]);
+    return res.status(200).json(result[0][0]['get_activity_for_id_json']);
   } catch (error) {
-    console.log(error);
+    console.log("ERROR: ",error);
     return res.status(500).json({ error: "Internal error" });
   }
 };
