@@ -11,6 +11,8 @@ const POST_OBJETIVE_FOR_ID  = async (req = request, res = response) => {
     const result = await sequelize.query(   
      `select * from get_objective_for_id_json ('${id_obj}');`
     );
+    //console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+    //console.log(result[0][0]['get_objective_for_id_json']);
     return res.status(200).json(result[0][0]['get_objective_for_id_json']);
 
   } catch (error) {
