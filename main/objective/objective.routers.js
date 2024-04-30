@@ -11,7 +11,7 @@ const router = Router();
 router.post(
   "/objec",
   [ 
-    //check("id_stage", "The id is invalid").isUUID(4),
+    //check("id_obj", "The id is invalid").isUUID(4),
     //check("id_ability", "The id is invalid").isUUID(4),
     validateFields 
   ],
