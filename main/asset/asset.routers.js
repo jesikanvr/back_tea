@@ -1,56 +1,54 @@
 const { Router } = require("express");
 const { check } = require("express-validator");
 
-const { POST_HOMEWORK_P } = require("./homework.controllers");
-const { POST_HOMEWORK_FOR_ID } = require("./homework.controllers");
-const { INSERT_HOMEWORK } = require("./homework.controllers");
-const { UPDATE_HOMEWORK } = require("./homework.controllers");
-const { DELETE_HOMEWORK } = require("./homework.controllers");
+const { GET_ASSET_ACTIVITY } = require("./asset.controllers");
+const { GET_ASSET_ORIENTATION } = require("./asset.controllers");
+const { INSERT_ASSET } = require("./asset.controllers");
+const { UPDATE_ASSET } = require("./asset.controllers");
+const { DELETE_ASSET } = require("./asset.controllers");
 const { validateFields } = require("../../middlewares/validate-fields");
 
 
 const router = Router();
 
-/* router.post(
-  "/",
+router.get(
+  "/getAssetActivity",
   [ 
     //check("id_stage", "The id is invalid").isUUID(4),
     //check("id_ability", "The id is invalid").isUUID(4),
     validateFields 
   ],
-  POST_HOMEWORK_P
-); */
-
-router.post(
-  "/",
-  [ 
-    //check("id_stage", "The id is invalid").isUUID(4),
-    //check("id_ability", "The id is invalid").isUUID(4),
-    validateFields 
-  ],
-  POST_HOMEWORK_FOR_ID
+  GET_ASSET_ACTIVITY
 );
-
-router.post(
-  "/addHomework",
+router.get(
+  "/getAssetOrientation",
   [ 
     //check("id_stage", "The id is invalid").isUUID(4),
     //check("id_ability", "The id is invalid").isUUID(4),
     validateFields 
   ],
-  INSERT_HOMEWORK
+  GET_ASSET_ORIENTATION
+);
+router.post(
+  "/addAsset",
+  [ 
+    //check("id_stage", "The id is invalid").isUUID(4),
+    //check("id_ability", "The id is invalid").isUUID(4),
+    validateFields 
+  ],
+  INSERT_ASSET
 );
 
 router.put(
-  "/updateHomework",
+  "/updateAsset",
   [ validateFields ],
-  UPDATE_HOMEWORK
+  UPDATE_ASSET
 );
 
 router.delete(
-  "/deleteHomework",
+  "/deleteAsset",
   [ validateFields ],
-  DELETE_HOMEWORK
+  DELETE_ASSET
 );
 
 module.exports = router;
