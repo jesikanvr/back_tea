@@ -16,11 +16,39 @@ const Post_ACTIVITY_ID = async (req = request, res = response) => {
   }
 };
 
+const INSERT_ACTIVITY = async (req = request, res = response) => {
+  const { description_activity, id_objec } = req.body;
+  try {
+    const result = await sequelize.query(
+      `select * from insert_activity ('${description_activity}', '${id_objec}');`
+    );
+    return res.status(200).json({message: "Se ha creado la actividad correctamente"});
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal error" });
+  }
+};
+
+const UPDATE_ACTIVITY = async (req = request, res = response) => {
+  const { id_act, description_act } = req.body;
+  try {
+    const result = await sequelize.query(
+      `select * from update_activity ('${id_act}', '${description_act}');`
+    );
+    return res.status(200).json({message: "Se ha modificado la actividad correctamente"});
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal error" });
+  }
+};
+
 const POST_ACTIVITY = async (req = request, res = response) => {
   res.status(200).json({ activity: {} });
 };
 
 module.exports = {
   Post_ACTIVITY_ID,
+  INSERT_ACTIVITY,
+  UPDATE_ACTIVITY,
   POST_ACTIVITY,
 };

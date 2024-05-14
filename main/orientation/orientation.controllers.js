@@ -42,6 +42,45 @@ const GET_ORIENTATION_HOMEWORK = async (req = request, res = response) => {
   }
 };
 
+const INSERT_ORIENTATION = async (req = request, res = response) => {
+  const { description_orientation, entity_id, entity_type } = req.body;
+  try {
+    const result = await sequelize.query(
+      `select * from insert_orientation ('${description_orientation}', '${entity_id}', '${entity_type}');`
+    );
+    return res.status(200).json({message: "Se ha creado la orientación correctamente"});
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal error" });
+  }
+};
+
+const UPDATE_ORIENTATION = async (req = request, res = response) => {
+  const { id_orient, description_orient } = req.body;
+  try {
+    const result = await sequelize.query(
+      `select * from update_orientation ('${id_orient}', '${description_orient}');`
+    );
+    return res.status(200).json({message: "Se ha modificado la orientación correctamente"});
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal error" });
+  }
+};
+
+const DELETE_ORIENTATION = async (req = request, res = response) => {
+  const { id_orient } = req.body;
+  try {
+    const result = await sequelize.query(
+      `select * from delete_orientation ('${id_orient}');`
+    );
+    return res.status(200).json({message: "Se ha eliminado la orientación correctamente"});
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal error" });
+  }
+};
+
 const POST_ORIENTATION = async (req = request, res = response) => {
 
   res.status(200).json({ orientation: {} });
@@ -51,5 +90,8 @@ module.exports = {
   GET_ORIENTATION_OBJECTIVE,
   GET_ORIENTATION_ACTIVITY,
   GET_ORIENTATION_HOMEWORK,
+  INSERT_ORIENTATION,
+  UPDATE_ORIENTATION,
+  DELETE_ORIENTATION,
   POST_ORIENTATION,
 };

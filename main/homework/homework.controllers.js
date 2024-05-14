@@ -28,6 +28,45 @@ const POST_HOMEWORK_FOR_ID = async (req = request, res = response) => {
   }
 }
 
+const INSERT_HOMEWORK = async (req = request, res = response) => {
+  const { name_homework, id_object } = req.body;
+  try {
+    const result = await sequelize.query(
+      `select * from insert_homework ('${name_homework}', '${id_object}');`
+    );
+    return res.status(200).json({message: "Se ha creado la tarea correctamente"});
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal error" });
+  }
+};
+
+const UPDATE_HOMEWORK = async (req = request, res = response) => {
+  const { id_hom, name_hom } = req.body;
+  try {
+    const result = await sequelize.query(
+      `select * from update_homework ('${id_hom}', '${name_hom}');`
+    );
+    return res.status(200).json({message: "Se ha modificado la tarea correctamente"});
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal error" });
+  }
+};
+
+const DELETE_HOMEWORK = async (req = request, res = response) => {
+  const { id_hom } = req.body;
+  try {
+    const result = await sequelize.query(
+      `select * from delete_homework ('${id_hom}');`
+    );
+    return res.status(200).json({message: "Se ha eliminado la tarea correctamente"});
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal error" });
+  }
+};
+
 const POST_HOMEWORK = async (req = request, res = response) => {
 
   res.status(200).json({ homework: {} });
@@ -36,5 +75,8 @@ const POST_HOMEWORK = async (req = request, res = response) => {
 module.exports = {
   POST_HOMEWORK_P,
   POST_HOMEWORK_FOR_ID,
+  INSERT_HOMEWORK,
+  UPDATE_HOMEWORK,
+  DELETE_HOMEWORK,
   POST_HOMEWORK,
 };
