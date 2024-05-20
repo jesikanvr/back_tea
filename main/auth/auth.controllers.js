@@ -5,7 +5,7 @@ const { response, request } = require("express");
 const login = async (req = request, res = response) => {
   const { email, password } = req.body;
   try {
- /*    //verificar si el email existe y verificar si el usuario esta activo
+  //verificar si el email existe y verificar si el usuario esta activo
     const user = await User.findOne({ where: { email } });
     if (!user || !user.state) {
       return res.json({ status: 400, error: "User or password not valid" });
@@ -16,9 +16,9 @@ const login = async (req = request, res = response) => {
       return res.json({ status: 400, error: "User or password not valid p" });
     }
     //generar JWT
-    const token = await generateJWT(user.id); */
+    const token = await generateJWT(user.id); 
     //respuesta
-    return res.json({ status: 200, user:{email,password}, token:{} });
+    return res.json({ status: 200, user:{email,password}, token });
   } catch (error) {
     console.log(error);
     return res.json({ status: 500, error: "Internal error" });
