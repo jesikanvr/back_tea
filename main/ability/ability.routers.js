@@ -2,6 +2,7 @@ const { Router } = require("express");
 //const { check } = require("express-validator");
 
 const { GET_ABILITY } = require("./ability.controllers");
+const { GET_ABILITY_FOR_ID } = require("./ability.controllers");
 const { INSERT_ABILITY } = require("./ability.controllers");
 const { UPDATE_ABILITY } = require("./ability.controllers");
 const { DELETE_ABILITY } = require("./ability.controllers");
@@ -14,6 +15,12 @@ router.get(
   "/",
   [ validateFields ],
   GET_ABILITY
+);
+
+router.get(
+  "/id_ab",
+  [ validateFields ],
+  GET_ABILITY_FOR_ID
 );
 
 router.post(
