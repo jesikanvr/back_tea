@@ -16,10 +16,11 @@ const GET_ABILITY = async (req = request, res = response) => {
 };
 
 const GET_ABILITY_FOR_ID = async (req = request, res = response) => {
-  const { id_ab } = req.body;
+  const { id } = req.query;
+  console.log('PARAMS', req)
   try {
     const result = await sequelize.query(
-      `select * from get_ability_for_id_json ('${id_ab}');`
+      `select * from get_ability_for_id_json ('${id}');`
     );
     return res.status(200).json(result[0][0]['get_ability_for_id_json']);
   } catch (error) {

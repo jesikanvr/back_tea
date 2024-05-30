@@ -18,7 +18,7 @@ router.get(
 );
 
 router.get(
-  "/id_ab",
+  "/get",
   [ validateFields ],
   GET_ABILITY_FOR_ID
 );
