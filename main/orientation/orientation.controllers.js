@@ -9,9 +9,9 @@ const GET_ORIENTATION_OBJECTIVE = async (req = request, res = response) => {
   const { id_objective, page, limit } = req.body;
   try { 
     const result = await sequelize.query(
-      `select * from get_orientations_for_objective_json ('${id_objective}');`
+      `select * from get_orientations_for_objective ('${id_objective}');`
     );
-    return res.status(200).json(result[0]);
+    return res.status(200).json(result[0][0]['get_orientations_for_objective']);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal error" });
@@ -21,9 +21,9 @@ const GET_ORIENTATION_ACTIVITY = async (req = request, res = response) => {
   const { id_activity, page, limit } = req.body;
   try { 
     const result = await sequelize.query(
-      `select * from get_orientations_for_activities_json ('${id_activity}');`
+      `select * from get_orientations_for_activities ('${id_activity}');`
     );
-    return res.status(200).json(result[0]);
+    return res.status(200).json(result[0][0]['get_orientations_for_activities']);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal error" });
@@ -33,9 +33,9 @@ const GET_ORIENTATION_HOMEWORK = async (req = request, res = response) => {
   const { id_homework, page, limit } = req.body;
   try { 
     const result = await sequelize.query(
-      `select * from get_orientations_for_homework_json ('${id_homework}');`
+      `select * from get_orientations_for_homeworks ('${id_homework}');`
     );
-    return res.status(200).json(result[0]);
+    return res.status(200).json(result[0][0]['get_orientations_for_homeworks']);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal error" });
