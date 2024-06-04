@@ -4,6 +4,20 @@ const { SEND_MAIL } = require("../../helpers/google-email");
 
 // ${page || 1}, ${limit || -1}
 
+const Post_ORIENTATION_ID = async (req = request, res = response) => {
+  const { id} = req.body;
+  try {
+    const result = await sequelize.query(
+      `select * from get_orientation('${id}');`
+    );
+
+    return res.status(200).json(result[0][0]['get_orientation']);
+  } catch (error) {
+    console.log("ERROR: ",error);
+    return res.status(500).json({ error: "Internal error" });
+  }
+};
+
 
 const GET_ORIENTATION_OBJECTIVE = async (req = request, res = response) => {
   const { id_objective, page, limit } = req.body;
@@ -87,6 +101,7 @@ const POST_ORIENTATION = async (req = request, res = response) => {
 };
 
 module.exports = {
+  Post_ORIENTATION_ID,
   GET_ORIENTATION_OBJECTIVE,
   GET_ORIENTATION_ACTIVITY,
   GET_ORIENTATION_HOMEWORK,
