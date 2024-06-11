@@ -63,7 +63,14 @@ const INSERT_ORIENTATION = async (req = request, res = response) => {
   try {
     orientation['description'] = description
     if (assets.length > 0) {
-      orientation['assets'] = assets
+      list_asset = []
+      assets.forEach(element => {
+        list_asset.push({
+          link: element,
+          type: 'img'
+        })
+      });
+      orientation['assets'] = list_asset
     }
     console.log(orientation)
     const result = await sequelize.query(
