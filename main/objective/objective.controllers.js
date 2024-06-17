@@ -26,7 +26,7 @@ const GET_OBJECTIVE  = async (req = request, res = response) => {
       //`select * from pg_get_ability_from_stage (${page || 1}, ${limit || -1});`
       `select * from ${key_function} ('${id}');`
     );
-    return res.status(200).json({ objectives: PARSE_DB_RESPONSE(result, key_function) });
+    return res.status(200).json(PARSE_DB_RESPONSE(result, key_function));
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal error" });
