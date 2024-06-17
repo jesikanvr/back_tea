@@ -25,7 +25,6 @@ router.get(
   "/list",
   [
     check("id", "The id is invalid").isUUID(4),
-    check("entity", "Is not empty").isString().not().isEmpty(),
     validateFields,
   ],
   GET_ORIENTATION_LIST
