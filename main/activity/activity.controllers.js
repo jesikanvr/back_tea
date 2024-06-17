@@ -10,7 +10,7 @@ const ACTIVITY_ID = async (req = request, res = response) => {
     const result = await sequelize.query(
       `select * from ${key_function}('${id}');`
     );
-    return res.status(200).json({activity: PARSE_DB_RESPONSE(result, key_function)});
+    return res.status(200).json(PARSE_DB_RESPONSE(result, key_function));
   } catch (error) {
     console.log("ERROR: ",error);
     return res.status(500).json({ error: "Internal error" });
