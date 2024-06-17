@@ -6,7 +6,7 @@ const { POST_OBJETIVE_FOR_ABILITY } = require("./objective.controllers");
 const { INSERT_OBJECTIVE } = require("./objective.controllers");
 const { UPDATE_OBJECTIVE } = require("./objective.controllers");
 const { DELETE_OBJECTIVE } = require("./objective.controllers");
-const { GET_OBJETIVES } = require("./objective.controllers");
+const { GET_OBJECTIVE, GET_OBJECTIVES } = require("./objective.controllers");
 const { validateFields } = require("../../middlewares/validate-fields");
 const { validateJWT } = require("../../middlewares/validate-jwt");
 
@@ -14,13 +14,22 @@ const { validateJWT } = require("../../middlewares/validate-jwt");
 const router = Router();
 
 router.get(
+  "/",
+  [ 
+    check("id", "The id is invalid").isUUID(4),
+    //check("id_ability", "The id is invalid").isUUID(4),
+    //validateFields 
+  ],
+  GET_OBJECTIVE
+);
+router.get(
   "/list",
   [ 
     //check("id_obj", "The id is invalid").isUUID(4),
     //check("id_ability", "The id is invalid").isUUID(4),
     //validateFields 
   ],
-  GET_OBJETIVES
+  GET_OBJECTIVES
 );
 router.get(
   "/ability",

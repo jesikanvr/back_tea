@@ -2,7 +2,7 @@ const { response, request } = require("express");
 const { sequelize } = require("../../database/conf");
 const { PARSE_DB_RESPONSE } = require("../../helpers/helper.parse.ds");
 
-const GET_OBJETIVES  = async (req = request, res = response) => {
+const GET_OBJECTIVES  = async (req = request, res = response) => {
   const key_function = 'get_objectives';
   try {
     const result = await sequelize.query(
@@ -17,23 +17,22 @@ const GET_OBJETIVES  = async (req = request, res = response) => {
   }
 };
 
-const POST_OBJETIVE_FOR_ID  = async (req = request, res = response) => {
-  const { id_obj} = req.body;
+const GET_OBJECTIVE  = async (req = request, res = response) => {
+  const key_function = 'get_objective';
+  const { id } = req.query;
   //console.log(result)
   try {
-    const result = await sequelize.query(   
-     `select * from get_objective_for_id_json ('${id_obj}');`
+    const result = await sequelize.query(
+      //`select * from pg_get_ability_from_stage (${page || 1}, ${limit || -1});`
+      `select * from ${key_function} ('${id}');`
     );
-    //console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
-    while (result[0][0]['get_objective_for_id_json'].length !== 0) {
-      return res.status(200).json(result[0][0]['get_objective_for_id_json']);
-    }
-
+    return res.status(200).json({ objectives: PARSE_DB_RESPONSE(result, key_function) });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal error" });
   }
 };
+
 const POST_OBJETIVE_FOR_ABILITY  = async (req = request, res = response) => {
   const { id_ab} = req.body;
   //console.log(result)
@@ -97,17 +96,11 @@ const DELETE_OBJECTIVE = async (req = request, res = response) => {
   }
 };
 
-const POST_OBJETIVE = async (req = request, res = response) => {
-
-  res.status(200).json({ objetive: {} });
-};
-
 module.exports = {
-  GET_OBJETIVES,
-  POST_OBJETIVE_FOR_ID,
+  GET_OBJECTIVES,
+  GET_OBJECTIVE,
   POST_OBJETIVE_FOR_ABILITY,
   INSERT_OBJECTIVE,
   UPDATE_OBJECTIVE,
   DELETE_OBJECTIVE,
-  POST_OBJETIVE,
 };
