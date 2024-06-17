@@ -1,56 +1,96 @@
 const { Router } = require("express");
 const { check } = require("express-validator");
 
-const { Post_ACTIVITY_ID } = require("./activity.controllers");
-const { POST_ACTIVITY_FOR_OBJECTIVE } = require("./activity.controllers");
-const { INSERT_ACTIVITY } = require("./activity.controllers");
-const { UPDATE_ACTIVITY } = require("./activity.controllers");
-const { DELETE_ACTIVITY } = require("./activity.controllers");
+const { 
+        ACTIVITY_ID, 
+        ACTIVITY_FOR_OBJECTIVE, 
+        INSERT_ACTIVITY, 
+        UPDATE_ACTIVITY, 
+        DELETE_ACTIVITY 
+      } = require("./activity.controllers");
 const { validateFields } = require("../../middlewares/validate-fields");
+const { validateJWT } = require("../../middlewares/validate-jwt");
 
 
 const router = Router();
 
-router.post(
+router.get(
   "/",
-  [ 
-    //check("id_stage", "The id is invalid").isUUID(4),
-    //check("id_ability", "The id is invalid").isUUID(4),
-    validateFields 
+  [
+    check("id", "The id is invalid").isUUID(4),
+    validateFields
   ],
-  
-  Post_ACTIVITY_ID
+
+  ACTIVITY_ID
 );
-router.post(
-  "/id_obj",
-  [ 
-    //check("id_stage", "The id is invalid").isUUID(4),
-    //check("id_ability", "The id is invalid").isUUID(4),
-    validateFields 
+router.get(
+  "/objective",
+  [
+    check("id_objective", "The id is invalid").isUUID(4),
+    validateFields
   ],
-  
-  POST_ACTIVITY_FOR_OBJECTIVE
+
+  ACTIVITY_FOR_OBJECTIVE
 );
 
 router.post(
-  "/addActivity",
-  [ 
-    //check("id_stage", "The id is invalid").isUUID(4),
-    //check("id_ability", "The id is invalid").isUUID(4),
-    validateFields 
+  "/",
+  [
+    validateJWT,
+    check("description")
+      .isString()
+      .withMessage("The description field must be a text string")
+      .not()
+      .isEmpty()
+      .withMessage("The description is not empty"),
+    check("orientations")
+      .optional()
+      .isArray()
+      .isUUID(4)
+      .withMessage("The orientations field must be a Arry<UUID>"),
+    check("homework")
+      .optional()
+      .isArray()
+      .isUUID(4)
+      .withMessage("The homeworks field must be a Arry<UUID>"),
+    validateFields
   ],
   INSERT_ACTIVITY
 );
 
 router.put(
-  "/updateActivity",
-  [ validateFields ],
+  "/",
+  [
+    validateJWT,
+    check("id", "The id is invalid").isUUID(4),
+    check("description")
+      .isString()
+      .withMessage("The description field must be a text string")
+      .not()
+      .isEmpty()
+      .withMessage("The description is not empty"),
+    check("orientations")
+      .optional()
+      .isArray()
+      .isUUID(4)
+      .withMessage("The orientations field must be a Arry<UUID>"),
+    check("homework")
+      .optional()
+      .isArray()
+      .isUUID(4)
+      .withMessage("The homeworks field must be a Arry<UUID>"),
+    validateFields
+  ],
   UPDATE_ACTIVITY
 );
 
 router.delete(
-  "/deleteActivity",
-  [ validateFields ],
+  "/",
+  [
+    validateJWT,
+    check("id", "The id is invalid").isUUID(4),
+    validateFields
+  ],
   DELETE_ACTIVITY
 );
 

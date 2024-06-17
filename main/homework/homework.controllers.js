@@ -29,12 +29,13 @@ const POST_HOMEWORK_FOR_ID = async (req = request, res = response) => {
 }
 
 const INSERT_HOMEWORK = async (req = request, res = response) => {
-  const { name_homework, id_object } = req.body;
+  const key_function = 'insert_only_task';
+  const { name } = req.body;
   try {
     const result = await sequelize.query(
-      `select * from insert_homework ('${name_homework}', '${id_object}');`
+      `select * from ${key_function} ('${name}');`
     );
-    return res.status(200).json({message: "Se ha creado la tarea correctamente"});
+    return res.status(200).json(PARSE_DB_RESPONSE(result, key_function));
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal error" });
