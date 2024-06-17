@@ -1,8 +1,21 @@
 const { response, request } = require("express");
 const { sequelize } = require("../../database/conf");
-const { SEND_MAIL } = require("../../helpers/google-email");
-const { body } = require("express-validator");
-//const { GET_ABILITY } = require("../../ability.controllers");
+const { PARSE_DB_RESPONSE } = require("../../helpers/helper.parse.ds");
+
+const GET_OBJETIVES  = async (req = request, res = response) => {
+  const key_function = 'get_objectives';
+  try {
+    const result = await sequelize.query(
+      //`select * from pg_get_ability_from_stage (${page || 1}, ${limit || -1});`
+      `select * from ${key_function} ();`
+    );
+    return res.status(200).json({ objectives: PARSE_DB_RESPONSE(result, key_function) });
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal error" });
+  }
+};
 
 const POST_OBJETIVE_FOR_ID  = async (req = request, res = response) => {
   const { id_obj} = req.body;
@@ -36,44 +49,53 @@ const POST_OBJETIVE_FOR_ABILITY  = async (req = request, res = response) => {
   }
 };
 
-  const INSERT_OBJECTIVE = async (req = request, res = response) => {
-    const { name_objective, id_ab } = req.body;
-    try {
-      const result = await sequelize.query(
-        `select * from insert_objective ('${name_objective}', '${id_ab}');`
-      );
-      return res.status(200).json({message: "Se ha creado el objetivo correctamente"});
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({ error: "Internal error" });
-    }
-  };
+const INSERT_OBJECTIVE = async (req = request, res = response) => {
+  const key_function = 'insert_only_objective';
+  let objective = {}
+  try {
+    const { user_id, name, activities = [], abilities = [] } = req.body;
 
-  const UPDATE_OBJECTIVE = async (req = request, res = response) => {
-    const { id_obj, name_objective } = req.body;
-    try {
-      const result = await sequelize.query(
-        `select * from update_objective ('${id_obj}', '${name_objective}');`
-      );
-      return res.status(200).json({message: "Se ha modificado el objetivo correctamente"});
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({ error: "Internal error" });
-    }
-  };
+    objective['user_id'] = user_id;
+    objective['name'] = name;
+    objective['activities'] = activities;
+    objective['abilities'] = abilities;
 
-  const DELETE_OBJECTIVE = async (req = request, res = response) => {
-    const { id_obj } = req.body;
-    try {
-      const result = await sequelize.query(
-        `select * from delete_objective ('${id_obj}');`
-      );
-      return res.status(200).json({message: "Se ha eliminado el objetivo correctamente"});
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({ error: "Internal error" });
-    }
-  };
+    const result = await sequelize.query(
+      `select * from ${key_function} ('${JSON.stringify(objective)}');`
+    );
+
+    return res.status(200).json(PARSE_DB_RESPONSE(result, key_function));
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal error" });
+  }
+};
+
+const UPDATE_OBJECTIVE = async (req = request, res = response) => {
+  const { id_obj, name_objective } = req.body;
+  try {
+    const result = await sequelize.query(
+      `select * from update_objective ('${id_obj}', '${name_objective}');`
+    );
+    return res.status(200).json({message: "Se ha modificado el objetivo correctamente"});
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal error" });
+  }
+};
+
+const DELETE_OBJECTIVE = async (req = request, res = response) => {
+  const { id_obj } = req.body;
+  try {
+    const result = await sequelize.query(
+      `select * from delete_objective ('${id_obj}');`
+    );
+    return res.status(200).json({message: "Se ha eliminado el objetivo correctamente"});
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal error" });
+  }
+};
 
 const POST_OBJETIVE = async (req = request, res = response) => {
 
@@ -81,6 +103,7 @@ const POST_OBJETIVE = async (req = request, res = response) => {
 };
 
 module.exports = {
+  GET_OBJETIVES,
   POST_OBJETIVE_FOR_ID,
   POST_OBJETIVE_FOR_ABILITY,
   INSERT_OBJECTIVE,

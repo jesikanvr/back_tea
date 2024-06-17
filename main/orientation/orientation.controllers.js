@@ -1,6 +1,5 @@
 const { response, request } = require("express");
 const { sequelize } = require("../../database/conf");
-const { SEND_MAIL } = require("../../helpers/google-email");
 const { PARSE_DB_RESPONSE } = require("../../helpers/helper.parse.ds");
 
 // ${page || 1}, ${limit || -1}
@@ -20,36 +19,14 @@ const GET_ORIENTATION = async (req = request, res = response) => {
 };
 
 const GET_ORIENTATION_LIST = async (req = request, res = response) => {
-  let key_function = "";
-  const { id, entity } = req.query;
+  let key_function = "get_orientations_for_activities";
+  const { id } = req.query;
   try {
     let result = {};
-
-    switch (entity) {
-      case "objective":
-        result = await sequelize.query(
-          `select * from get_orientations_for_objective ('${id}');`
-        );
-        key_function = "get_orientations_for_objective";
-        break;
-      case "activity":
-        result = await sequelize.query(
-          `select * from get_orientations_for_activities ('${id}');`
-        );
-        key_function = "get_orientations_for_activities";
-        break;
-      case "homework":
-        result = await sequelize.query(
-          `select * from get_orientations_for_homeworks ('${id}');`
-        );
-        key_function = "get_orientations_for_homeworks";
-        break;
-      default:
-        res.status(404).json({ error: "not entity empty" });
-        break;
-    }
-
-    return res.status(200).json(result[0][0][key_function]);
+    result = await sequelize.query(
+      `select * from ${key_function} ('${id}');`
+    );
+    return res.status(200).json(PARSE_DB_RESPONSE(result, key_function));
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal error" });
