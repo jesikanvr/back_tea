@@ -3,6 +3,7 @@ const { check } = require("express-validator");
 
 const {
   GET_ORIENTATION,
+  GET_ONLY_ORIENTATION,
   GET_ORIENTATION_LIST,
   INSERT_ORIENTATION,
   UPDATE_ORIENTATION,
@@ -18,6 +19,12 @@ router.get(
   "/",
   [check("id", "The id is invalid").isUUID(4), validateFields],
   GET_ORIENTATION
+);
+
+//ONTENER ORIENTACION QUE NO ESTAN ASIGNADAS A ABILIDADES
+router.get(
+  "/only",
+ GET_ONLY_ORIENTATION
 );
 
 //OBTENER ORIENTACION POR LAS OTRAS ENTIDADES QUE LA CONTIENE

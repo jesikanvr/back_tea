@@ -8,8 +8,6 @@ const { validateJWT } = require("../../middlewares/validate-jwt");
 
 const router = Router();
 
-
-
 router.delete(
   "/",
   [ 

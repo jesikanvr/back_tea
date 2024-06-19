@@ -2,7 +2,27 @@ const { response, request } = require("express");
 const { sequelize } = require("../../database/conf");
 const { PARSE_DB_RESPONSE } = require("../../helpers/helper.parse.ds");
 
-// ${page || 1}, ${limit || -1}
+
+const GET_ONLY_ORIENTATION = async (req = request, res = response) => {
+  let key_function = "get_only_orientations";
+  try {
+    const result = await sequelize.query(
+      `select * from ${key_function}();`
+    );
+
+    let response = PARSE_DB_RESPONSE(result, key_function);
+
+    if (response) {
+      return res.status(200).json(PARSE_DB_RESPONSE(result, key_function));
+    }else {
+      return res.status(404).json({'msg': 'Not orientatiojn empty'});
+    }
+  } catch (error) {
+    console.log("ERROR: ", error);
+    return res.status(500).json({ error: "Internal error" });
+  }
+};
+
 
 const GET_ORIENTATION = async (req = request, res = response) => {
   let key_function = "get_orientation";
@@ -103,6 +123,7 @@ const DELETE_ORIENTATION = async (req = request, res = response) => {
 
 module.exports = {
   GET_ORIENTATION,
+  GET_ONLY_ORIENTATION,
   GET_ORIENTATION_LIST,
   INSERT_ORIENTATION,
   UPDATE_ORIENTATION,

@@ -178,7 +178,7 @@ const deleteObject = (bucketName, key) => {
 
 
 /****************************************************************************************************************/
-/*                                              OBTENER FICHEROS                                                /
+/*                                OBTENER FICHEROS PASANDO POR UNA CARPETEA                                      /
 /****************************************************************************************************************/
 const getObjectFisicalWrite = (bucketName, key) => {
     // delete object 'my-object' in bucket 'my-bucket' params

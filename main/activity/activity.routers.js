@@ -3,6 +3,7 @@ const { check } = require("express-validator");
 
 const { 
         ACTIVITY_ID, 
+        GET_ONLY_ACTIVITY,
         ACTIVITY_FOR_OBJECTIVE, 
         INSERT_ACTIVITY, 
         UPDATE_ACTIVITY, 
@@ -23,6 +24,14 @@ router.get(
 
   ACTIVITY_ID
 );
+
+//ONTENER ORIENTACION QUE NO ESTAN ASIGNADAS A ABILIDADES
+router.get(
+  "/only",
+  GET_ONLY_ACTIVITY
+);
+
+
 router.get(
   "/objective",
   [

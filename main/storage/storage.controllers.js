@@ -94,4 +94,20 @@ const getFile = async (req, res) => {
   }
 };
 
-module.exports = { createFile, createFiles, getListGFile, createBuckets, getFile };
+/**
+ * @param {*} req
+ * @param {*} res
+ */
+const deletetFile = async (req, res) => {
+  try {
+    const { key } = req.body
+    const resp = await deleteObject('storage', key);
+
+    res.status(200).send({'delete': [key]});
+  } catch (f) {
+    res.send({ error: f.message });
+  }
+};
+
+
+module.exports = { createFile, createFiles, getListGFile, createBuckets, getFile, deletetFile };
