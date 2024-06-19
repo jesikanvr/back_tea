@@ -42,7 +42,7 @@ const createFile = async (req, res) => {
  */
 const createFiles = async (req, res) => {
   try {
-    const { body, files } = req;
+    const { files } = req;
 
     let filesKey = []
     for (let index = 0; index < files.length; index++) {      

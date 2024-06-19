@@ -5,13 +5,14 @@ const { PARSE_DB_RESPONSE } = require("../../helpers/helper.parse.ds");
 // ${page || 1}, ${limit || -1}
 
 const GET_ORIENTATION = async (req = request, res = response) => {
+  let key_function = "get_orientation";
   const { id } = req.query;
 
   try {
     const result = await sequelize.query(
-      `select * from get_orientation('${id}');`
+      `select * from ${key_function}('${id}');`
     );
-    return res.status(200).json(result[0][0]["get_orientation"]);
+    return res.status(200).json(PARSE_DB_RESPONSE(result, key_function));
   } catch (error) {
     console.log("ERROR: ", error);
     return res.status(500).json({ error: "Internal error" });
@@ -72,14 +73,12 @@ const UPDATE_ORIENTATION = async (req = request, res = response) => {
     if (assets.length > 0) {
       orientation['assets'] = assets
     }
-    console.log('AAAAAAAAAAAAAAAAAAAAA')
-    console.log(orientation)
     const result = await sequelize.query(
       `select * from ${key_function} ('${JSON.stringify(orientation)}');`
     );
     return res
       .status(200)
-      .json({ message: "Se ha actualizado la orientación correctamente" , orientation: PARSE_DB_RESPONSE(result, key_function)});
+      .json(PARSE_DB_RESPONSE(result, key_function));
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal error" });
@@ -87,14 +86,15 @@ const UPDATE_ORIENTATION = async (req = request, res = response) => {
 };
 
 const DELETE_ORIENTATION = async (req = request, res = response) => {
-  const { id } = req.body;
+  const  key_function = 'delete_orientations'
+  const { orientations = [] } = req.body;
   try {
     const result = await sequelize.query(
-      `select * from delete_orientation ('${id}');`
+      `select * from ${key_function} ('${JSON.stringify(orientations)}');`
     );
     return res
       .status(200)
-      .json({ message: "Se ha eliminado la orientación correctamente" });
+      .json(PARSE_DB_RESPONSE(result, key_function));
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal error" });

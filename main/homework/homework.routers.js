@@ -1,8 +1,8 @@
 const { Router } = require("express");
 const { check } = require("express-validator");
 
-const { POST_HOMEWORK_P } = require("./homework.controllers");
-const { POST_HOMEWORK_FOR_ID } = require("./homework.controllers");
+const { GET_HOMEWORK_LIST } = require("./homework.controllers");
+const { GET_HOMEWORK } = require("./homework.controllers");
 const { INSERT_HOMEWORK } = require("./homework.controllers");
 const { UPDATE_HOMEWORK } = require("./homework.controllers");
 const { DELETE_HOMEWORK } = require("./homework.controllers");
@@ -12,24 +12,22 @@ const { validateJWT } = require("../../middlewares/validate-jwt");
 
 const router = Router();
 
-/* router.post(
-  "/",
-  [ 
-    //check("id_stage", "The id is invalid").isUUID(4),
-    //check("id_ability", "The id is invalid").isUUID(4),
-    validateFields 
-  ],
-  POST_HOMEWORK_P
-); */
-
 router.get(
   "/",
   [ 
-    //check("id_stage", "The id is invalid").isUUID(4),
-    //check("id_ability", "The id is invalid").isUUID(4),
+    check("id", "The id is invalid").isUUID(4),
     validateFields 
   ],
-  POST_HOMEWORK_FOR_ID
+  GET_HOMEWORK
+);
+
+router.get(
+  "/list",
+  [ 
+    check("id", "The id is invalid").isUUID(4),
+    validateFields 
+  ],
+  GET_HOMEWORK_LIST
 );
 
 router.post(
@@ -48,14 +46,31 @@ router.post(
 );
 
 router.put(
-  "/updateHomework",
-  [ validateFields ],
+  "/",
+  [ 
+    validateJWT,
+    check("id", "The id is invalid").isUUID(4),
+    check("name")
+      .isString()
+      .withMessage("The description field must be a text string")
+      .not()
+      .isEmpty()
+      .withMessage("The description is not empty"),
+    validateFields
+  ],
   UPDATE_HOMEWORK
 );
 
 router.delete(
-  "/deleteHomework",
-  [ validateFields ],
+  "/",
+  [ 
+    validateJWT,
+    check("homework")
+      .isArray()
+      .isUUID(4)
+      .withMessage("The homework field must be a Arry<UUID>"),
+    validateFields 
+  ],
   DELETE_HOMEWORK
 );
 

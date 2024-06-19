@@ -1,7 +1,6 @@
 const { Router } = require("express");
 const { check } = require("express-validator");
 
-const { POST_OBJETIVE_FOR_ID } = require("./objective.controllers");
 const { POST_OBJETIVE_FOR_ABILITY } = require("./objective.controllers");
 const { INSERT_OBJECTIVE } = require("./objective.controllers");
 const { UPDATE_OBJECTIVE } = require("./objective.controllers");
@@ -18,15 +17,13 @@ router.get(
   [ 
     check("id", "The id is invalid").isUUID(4),
     //check("id_ability", "The id is invalid").isUUID(4),
-    //validateFields 
+    validateFields 
   ],
   GET_OBJECTIVE
 );
 router.get(
   "/list",
   [ 
-    //check("id_obj", "The id is invalid").isUUID(4),
-    //check("id_ability", "The id is invalid").isUUID(4),
     //validateFields 
   ],
   GET_OBJECTIVES
@@ -34,8 +31,7 @@ router.get(
 router.get(
   "/ability",
   [ 
-    //check("id_stage", "The id is invalid").isUUID(4),
-    //check("id_ability", "The id is invalid").isUUID(4),
+    check("id", "The id is invalid").isUUID(4),
     validateFields 
   ],
   POST_OBJETIVE_FOR_ABILITY
@@ -68,14 +64,41 @@ router.post(
 );
 
 router.put(
-  "/updateObjective",
-  [ validateFields ],
+  "/",
+  [
+    validateJWT,
+    check("id", "The id is invalid").isUUID(4),
+    check("name")
+      .isString()
+      .withMessage("The name field must be a text string")
+      .not()
+      .isEmpty()
+      .withMessage("The name is not empty"),
+    check("activities")
+      .optional()
+      .isArray()
+      .isUUID(4)
+      .withMessage("The activities field must be a Arry<UUID>"),
+    check("abilities")
+      .optional()
+      .isArray()
+      .isUUID(4)
+      .withMessage("The abilities field must be a Arry<UUID>"),
+    validateFields
+  ],
   UPDATE_OBJECTIVE
 );
 
 router.delete(
-  "/deleteObjective",
-  [ validateFields ],
+  "/",
+  [
+    validateJWT,
+    check("objectives")
+      .isArray()
+      .isUUID(4)
+      .withMessage("The objectives field must be a Arry<UUID>"),
+    validateFields
+  ],
   DELETE_OBJECTIVE
 );
 
