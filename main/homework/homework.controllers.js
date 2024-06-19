@@ -17,6 +17,26 @@ const GET_HOMEWORK = async (req = request, res = response) => {
   }
 };
 
+const GET_ONLY_HOMEWORK = async (req = request, res = response) => {
+  let key_function = "get_only_task";
+  try {
+    const result = await sequelize.query(
+      `select * from ${key_function}();`
+    );
+
+    let response = PARSE_DB_RESPONSE(result, key_function);
+
+    if (response) {
+      return res.status(200).json(PARSE_DB_RESPONSE(result, key_function));
+    }else {
+      return res.status(404).json({'msg': 'Not orientatiojn empty'});
+    }
+  } catch (error) {
+    console.log("ERROR: ", error);
+    return res.status(500).json({ error: "Internal error" });
+  }
+};
+
 const GET_HOMEWORK_LIST = async (req = request, res = response) => {
   let key_function = "get_task_for_activities";
   const { id } = req.query;
@@ -78,6 +98,7 @@ const DELETE_HOMEWORK = async (req = request, res = response) => {
 
 module.exports = {
   GET_HOMEWORK,
+  GET_ONLY_HOMEWORK,
   GET_HOMEWORK_LIST,
   INSERT_HOMEWORK,
   UPDATE_HOMEWORK,

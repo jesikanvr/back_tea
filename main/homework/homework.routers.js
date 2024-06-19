@@ -3,6 +3,7 @@ const { check } = require("express-validator");
 
 const { GET_HOMEWORK_LIST } = require("./homework.controllers");
 const { GET_HOMEWORK } = require("./homework.controllers");
+const { GET_ONLY_HOMEWORK } = require("./homework.controllers");
 const { INSERT_HOMEWORK } = require("./homework.controllers");
 const { UPDATE_HOMEWORK } = require("./homework.controllers");
 const { DELETE_HOMEWORK } = require("./homework.controllers");
@@ -19,6 +20,12 @@ router.get(
     validateFields 
   ],
   GET_HOMEWORK
+);
+
+//ONTENER ORIENTACION QUE NO ESTAN ASIGNADAS A ABILIDADES
+router.get(
+  "/only",
+  GET_ONLY_HOMEWORK
 );
 
 router.get(

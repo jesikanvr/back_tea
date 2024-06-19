@@ -17,6 +17,26 @@ const ACTIVITY_ID = async (req = request, res = response) => {
   }
 };
 
+const GET_ONLY_ACTIVITY = async (req = request, res = response) => {
+  let key_function = "get_only_activities";
+  try {
+    const result = await sequelize.query(
+      `select * from ${key_function}();`
+    );
+
+    let response = PARSE_DB_RESPONSE(result, key_function);
+
+    if (response) {
+      return res.status(200).json(PARSE_DB_RESPONSE(result, key_function));
+    }else {
+      return res.status(404).json({'msg': 'Not orientatiojn empty'});
+    }
+  } catch (error) {
+    console.log("ERROR: ", error);
+    return res.status(500).json({ error: "Internal error" });
+  }
+};
+
 const ACTIVITY_FOR_OBJECTIVE  = async (req = request, res = response) => {
   const key_function = 'get_activities_for_objective';
   const { id_objective } = req.query;
@@ -123,6 +143,7 @@ const DELETE_ACTIVITY = async (req = request, res = response) => {
 
 module.exports = {
   ACTIVITY_ID,
+  GET_ONLY_ACTIVITY,
   ACTIVITY_FOR_OBJECTIVE,
   INSERT_ACTIVITY,
   UPDATE_ACTIVITY,
