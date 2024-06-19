@@ -62,10 +62,10 @@ const UPDATE_HOMEWORK = async (req = request, res = response) => {
 
 const DELETE_HOMEWORK = async (req = request, res = response) => {
   const key_function = 'delete_tasks';
-  const { tasks = [] } = req.body;
+  const { homework = [] } = req.body;
   try {
     const result = await sequelize.query(
-      `select * from ${key_function} ('${JSON.stringify(tasks)}');`
+      `select * from ${key_function} ('${JSON.stringify(homework)}');`
     );
     return res
       .status(200)
