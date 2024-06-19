@@ -1,11 +1,9 @@
 const { response, request } = require("express");
 const { sequelize } = require("../../database/conf");
-//const { SEND_MAIL } = require("../../helpers/google-email");
 const { PARSE_DB_RESPONSE } = require("../../helpers/helper.parse.ds");
 
 const GET_ABILITYS = async (req = request, res = response) => {
   const key_function = 'get_abilities';
-  //const { page, limit } = req.query;
   try {
     const result = await sequelize.query(
       //`select * from pg_get_ability_from_stage (${page || 1}, ${limit || -1});`
@@ -34,13 +32,18 @@ const INSERT_ABILITY = async (req = request, res = response) => {
 };
 
 const UPDATE_ABILITY = async (req = request, res = response) => {
+  const key_function = 'update_ability';
   const { id, name } = req.body;
-  console.log('REQUESTT', req);
+  let ability = {}
   try {
+    ability['id'] = id;
+    ability['name'] = name;
     const result = await sequelize.query(
-      `select * from update_ability ('${id}', '${name}');`
+      `select * from ${key_function} ('${JSON.stringify(ability)}');`
     );
-    return res.status(200).json({message: "Se ha modificado la habilidad correctamente"});
+    return res
+      .status(200)
+      .json(PARSE_DB_RESPONSE(result, key_function));
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal error" });
@@ -48,27 +51,24 @@ const UPDATE_ABILITY = async (req = request, res = response) => {
 };
 
 const DELETE_ABILITY = async (req = request, res = response) => {
-  const { id_ab } = req.body;
+  const key_function = 'delete_abilities';
+  const { abilities = [] } = req.body;
   try {
     const result = await sequelize.query(
-      `select * from delete_ability ('${id_ab}');`
+      `select * from ${key_function} ('${JSON.stringify(abilities)}');`
     );
-    return res.status(200).json({message: "Se ha eliminado la habilidad correctamente"});
+    return res
+      .status(200)
+      .json(PARSE_DB_RESPONSE(result, key_function));
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal error" });
   }
 };
 
-const POST_ABILITY = async (req = request, res = response) => {
-  res.status(200).json({ ability: {} });
-};
-
 module.exports = {
   GET_ABILITYS,
-  //GET_ABILITY_FOR_ID,
   INSERT_ABILITY,
   UPDATE_ABILITY,
   DELETE_ABILITY,
-  POST_ABILITY,
 };

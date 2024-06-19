@@ -34,14 +34,14 @@ const GET_OBJECTIVE  = async (req = request, res = response) => {
 };
 
 const POST_OBJETIVE_FOR_ABILITY  = async (req = request, res = response) => {
-  const { id_ab} = req.body;
-  //console.log(result)
+  const key_function = 'get_objectives_for_ability';
+  const { id } = req.query;
   try {
-    const result = await sequelize.query(   
-     `select * from get_objectives_for_ability_json ('${id_ab}');`
+    const result = await sequelize.query(
+      //`select * from pg_get_ability_from_stage (${page || 1}, ${limit || -1});`
+      `select * from ${key_function} ('${id}');`
     );
-    return res.status(200).json(result[0][0]['get_objectives_for_ability_json']);
-
+    return res.status(200).json(PARSE_DB_RESPONSE(result, key_function));
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal error" });
@@ -71,12 +71,56 @@ const INSERT_OBJECTIVE = async (req = request, res = response) => {
 };
 
 const UPDATE_OBJECTIVE = async (req = request, res = response) => {
-  const { id_obj, name_objective } = req.body;
+  const key_function = 'update_objective';
+  const key_function_get = 'get_objective';
+  let objective = {}
   try {
-    const result = await sequelize.query(
-      `select * from update_objective ('${id_obj}', '${name_objective}');`
+    const { id,  name, activities = [], abilities = [] } = req.body;
+
+    const result_obj = await sequelize.query(
+      `select * from ${key_function_get}('${id}');`
     );
-    return res.status(200).json({message: "Se ha modificado el objetivo correctamente"});
+
+    let temp_objective = PARSE_DB_RESPONSE(result_obj, key_function_get);
+
+    let inser_activities = []
+    let inser_abilities = []
+
+     //actualizar o eliminar actividades abilidad
+    if (temp_objective.activities && temp_objective.activities.length > 0) {
+      activities.forEach(element => {
+        let index = temp_objective.activities.findIndex(act => act.id === element);
+        if (index === -1) {
+          inser_activities.push(element);
+        }
+      });
+    }else {
+      inser_activities = activities;
+    }
+
+    //Insertar o desconectar abilidad
+    if (temp_objective.abilities && temp_objective.abilities.length > 0) {
+      abilities.forEach(element => {
+        let index = temp_objective.abilities.findIndex(ab => ab.id === element);
+        if (index === -1) {
+          inser_abilities.push(element);
+        }
+      });
+    }else {
+      inser_abilities = abilities;
+    }
+
+    objective['id'] = id;
+    objective['name'] = name;
+    objective['activities'] = inser_activities;
+    objective['abilities'] = inser_abilities;
+
+    
+    const result = await sequelize.query(
+      `select * from ${key_function} ('${JSON.stringify(objective)}');`
+    );
+
+    return res.status(200).json(PARSE_DB_RESPONSE(result, key_function));
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal error" });
@@ -84,12 +128,15 @@ const UPDATE_OBJECTIVE = async (req = request, res = response) => {
 };
 
 const DELETE_OBJECTIVE = async (req = request, res = response) => {
-  const { id_obj } = req.body;
+  const key_function = 'delete_objectives';
+  const { objectives = [] } = req.body;
   try {
     const result = await sequelize.query(
-      `select * from delete_objective ('${id_obj}');`
+      `select * from ${key_function} ('${JSON.stringify(objectives)}');`
     );
-    return res.status(200).json({message: "Se ha eliminado el objetivo correctamente"});
+    return res
+      .status(200)
+      .json(PARSE_DB_RESPONSE(result, key_function));
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal error" });

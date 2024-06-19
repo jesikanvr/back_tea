@@ -71,7 +71,6 @@ const UPDATE_ACTIVITY = async (req = request, res = response) => {
     if (temp_activity.orientations && temp_activity.orientations.length > 0) {
       orientations.forEach(element => {
         let index = temp_activity.orientations.findIndex(or => or.id === element);
-        console.log(index)
         if (index === -1) {
           inser_orientations.push(element);
         }
@@ -108,12 +107,14 @@ const UPDATE_ACTIVITY = async (req = request, res = response) => {
 
 const DELETE_ACTIVITY = async (req = request, res = response) => {
   const key_function = 'delete_activities';
-  const { id } = req.body;
+  const { activities = [] } = req.body;
   try {
     const result = await sequelize.query(
-      `select * from ${key_function}('["${id}"]');`
+      `select * from ${key_function} ('${JSON.stringify(activities)}');`
     );
-    return res.status(200).json(PARSE_DB_RESPONSE(result, key_function));
+    return res
+      .status(200)
+      .json(PARSE_DB_RESPONSE(result, key_function));
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal error" });

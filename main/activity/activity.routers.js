@@ -88,7 +88,10 @@ router.delete(
   "/",
   [
     validateJWT,
-    check("id", "The id is invalid").isUUID(4),
+    check("activities")
+      .isArray()
+      .isUUID(4)
+      .withMessage("The activities field must be a Arry<UUID>"),
     validateFields
   ],
   DELETE_ACTIVITY
