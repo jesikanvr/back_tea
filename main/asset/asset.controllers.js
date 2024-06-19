@@ -1,11 +1,12 @@
 const { response, request } = require("express");
 const { sequelize } = require("../../database/conf");
 const { SEND_MAIL } = require("../../helpers/google-email");
+const { PARSE_DB_RESPONSE } = require("../../helpers/helper.parse.ds");
 
 // ${page || 1}, ${limit || -1}
 
 
-const GET_ASSET_ACTIVITY = async (req = request, res = response) => {
+/* const GET_ASSET_ACTIVITY = async (req = request, res = response) => {
   const { id_act } = req.body;
   try { 
     const result = await sequelize.query(
@@ -54,31 +55,29 @@ const UPDATE_ASSET = async (req = request, res = response) => {
     console.log(error);
     return res.status(500).json({ error: "Internal error" });
   }
-};
+}; */
 
 const DELETE_ASSET = async (req = request, res = response) => {
-  const { id_asset } = req.body;
+  const key_function = 'delete_assets';
+  const { assets = [] } = req.body;
   try {
     const result = await sequelize.query(
-      `select * from delete_asset ('${id_asset}');`
+      `select * from ${key_function} ('${JSON.stringify(assets)}');`
     );
-    return res.status(200).json({message: "Se ha eliminado el asset correctamente"});
+    return res
+      .status(200)
+      .json(PARSE_DB_RESPONSE(result, key_function));
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal error" });
   }
 };
 
-const POST_ORIENTATION = async (req = request, res = response) => {
-
-  res.status(200).json({ orientation: {} });
-};
-
 module.exports = {
-  GET_ASSET_ACTIVITY,
+  /* GET_ASSET_ACTIVITY,
   GET_ASSET_ORIENTATION,
   INSERT_ASSET,
-  UPDATE_ASSET,
+  UPDATE_ASSET, */
   DELETE_ASSET,
-  POST_ORIENTATION,
+  /* POST_ORIENTATION, */
 };
